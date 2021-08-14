@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yellowclass/constants/colors.dart';
+import 'package:yellowclass/views/bottom_sheet.dart';
 
 import 'views/movies_list_view.dart';
 
@@ -40,6 +41,21 @@ class LandingPage extends StatelessWidget {
       ),
       body: Center(
         child: MoviesListView(),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: FloatingActionButton.extended(
+          label: Text("Add movie"),
+          icon: Icon(Icons.add),
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: bottomSheetView,
+            );
+          },
+        ),
       ),
     );
   }
