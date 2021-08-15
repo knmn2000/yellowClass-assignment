@@ -1,11 +1,18 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:yellowclass/modals/movie.dart';
 import 'package:http/http.dart' as http;
 
-class MoviesListView extends StatelessWidget {
+class MoviesListView extends StatefulWidget {
+  @override
+  _MoviesListViewState createState() => _MoviesListViewState();
+}
+
+class _MoviesListViewState extends State<MoviesListView> {
+  SlidableController slidableController;
   @override
   Widget build(BuildContext context) {
     // return FutureBuilder<Map<String, dynamic>>(
@@ -45,15 +52,32 @@ class MoviesListView extends StatelessWidget {
     }
   }
 
-// TODO: wrap with slideable widget
-  ListTile _tile(String title, String subtitle, String poster) => ListTile(
-        title: Text(title,
-            style: TextStyle(
-              fontWeight: FontWeight.w500,
-              fontSize: 20,
-            )),
-        subtitle: Text(subtitle),
-        // leading: Icon(icon, color: Colors.blue[500]),
+  Slidable _tile(String title, String subtitle, String poster) => Slidable(
+        child: ListTile(
+          title: Text(title,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 20,
+              )),
+          subtitle: Text(subtitle),
+          // leading: Icon(icon, color: Colors.blue[500]),
+        ),
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.25,
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            caption: 'Archive',
+            color: Colors.blue,
+            icon: Icons.archive,
+            onTap: () => print('Archive'),
+          ),
+          IconSlideAction(
+            caption: 'Share',
+            color: Colors.indigo,
+            icon: Icons.share,
+            onTap: () => print('Share'),
+          ),
+        ],
       );
 
   InfiniteListView _moviesListView(data) {

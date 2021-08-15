@@ -8,6 +8,7 @@ Widget bottomSheetView(BuildContext context) {
   return StatefulBuilder(
     builder: (BuildContext context, setState) {
       return Container(
+        padding: MediaQuery.of(context).viewInsets,
         //TODO: ADD BORDER RADIUS
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         height: MediaQuery.of(context).size.height * 0.7,
@@ -15,6 +16,7 @@ Widget bottomSheetView(BuildContext context) {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
                 children: [
@@ -25,8 +27,11 @@ Widget bottomSheetView(BuildContext context) {
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.85,
                         child: TextField(
-                          onTap: () {
-                            isSearching = isSearching;
+                          textInputAction: TextInputAction.search,
+                          onSubmitted: (_) {
+                            setState(() {
+                              isSearching = true;
+                            });
                           },
                           controller: _searchQueryController,
                           decoration: InputDecoration(
