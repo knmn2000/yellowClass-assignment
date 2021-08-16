@@ -22,17 +22,13 @@ Widget editViewSheet(BuildContext context, int key) {
   return StatefulBuilder(
     builder: (BuildContext context, setState) {
       return Container(
-        // padding: MediaQuery.of(context).viewInsets,
-        //TODO: ADD BORDER RADIUS
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
         width: double.infinity,
-        // height: MediaQuery.of(context).size.height * 0.4,
-        // height: 500,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            // child: ListView(
+            // EDIT TEXT FIELDS
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -56,12 +52,6 @@ Widget editViewSheet(BuildContext context, int key) {
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: TextField(
                     textInputAction: TextInputAction.search,
-                    onSubmitted: (_) {
-                      print('gg');
-                      // setState(() {
-                      //   isSearching = true;
-                      // });
-                    },
                     controller: _posterController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -78,12 +68,6 @@ Widget editViewSheet(BuildContext context, int key) {
                   width: MediaQuery.of(context).size.width * 0.85,
                   child: TextField(
                     textInputAction: TextInputAction.search,
-                    onSubmitted: (_) {
-                      print('gg');
-                      // setState(() {
-                      //   isSearching = true;
-                      // });
-                    },
                     controller: _directorController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(

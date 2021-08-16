@@ -26,25 +26,9 @@ class _SearchListViewState extends State<SearchListView> {
     _future = searchMovies(widget.searchQuery);
   }
 
-  // List data;
-  // Future<List<Movie>> _searchMovies() async {
-  //   if (data == null) {
-  //     final moviesListAPIUrl =
-  //         'https://api.themoviedb.org/3/search/movie?api_key=bb058074a670ad43d29e1d396c92ef1f&language=en-US&query=${widget.searchQuery}&page=1&include_adult=false';
-  //     final response = await http.get(Uri.parse(moviesListAPIUrl));
-  //     if (response.statusCode == 200) {
-  //       Map<String, dynamic> jsonResponse = json.decode(response.body);
-  //       data = jsonResponse['results'];
-  //       return data.map((movie) => new Movie.fromJson(movie)).toList();
-  //     } else {
-  //       throw Exception('Error');
-  //     }
-  //   }
-  //   return data;
-  // }
-
   void addMovie(Movie movie) {
     movieBox.add(movie);
+    // REFRESH LIST
     setState(() {
       movieBox = Hive.box('user_movies');
     });
@@ -77,12 +61,11 @@ class _SearchListViewState extends State<SearchListView> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      // BUILD LIST VIEW OUT OF API RESPONSE
       child: FutureBuilder<List<Movie>>(
-        // future: _searchMovies(),
         future: _future,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            // Map<String, dynamic> data = snapshot.data;
             List<Movie> data = snapshot.data;
             return _moviesListView(data);
           } else if (snapshot.hasError) {

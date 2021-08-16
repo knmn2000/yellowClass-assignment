@@ -7,14 +7,11 @@ Widget bottomSheetView(BuildContext context) {
   return StatefulBuilder(
     builder: (BuildContext context, setState) {
       return Container(
-        // padding: MediaQuery.of(context).viewInsets,
-        //TODO: ADD BORDER RADIUS
         decoration: BoxDecoration(
             borderRadius: new BorderRadius.only(
           topLeft: const Radius.circular(25.0),
           topRight: const Radius.circular(25.0),
         )),
-        // height: MediaQuery.of(context).size.height * 0.7,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -23,6 +20,7 @@ Widget bottomSheetView(BuildContext context) {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
+                // TEXT FIELD
                 children: [
                   Expanded(
                     flex: 9,
@@ -50,6 +48,7 @@ Widget bottomSheetView(BuildContext context) {
                     ),
                   ),
                   Expanded(
+                    // SEARCH BUTTON
                     flex: 1,
                     child: IconButton(
                         icon: Icon(
@@ -68,7 +67,7 @@ Widget bottomSheetView(BuildContext context) {
                   ),
                 ],
               ),
-              // TODO: Alternative to sizedbox for flexible heights
+              // SEARCH RESULTS
               isSearching
                   ? SizedBox(
                       height: 500,

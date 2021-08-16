@@ -9,8 +9,6 @@ import 'modals/movie.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 GoogleSignIn _googleSignIn = GoogleSignIn(
-  // Optional clientId
-  // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
   scopes: <String>[
     'email',
   ],
@@ -30,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Yellow class Assignment',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Color(offwhite),
@@ -87,7 +85,6 @@ class _LandingPageState extends State<LandingPage>
 
   @override
   void dispose() {
-    // or close the specific box
     Hive.close();
     controller.dispose();
     super.dispose();
@@ -103,6 +100,7 @@ class _LandingPageState extends State<LandingPage>
       appBar: AppBar(
         centerTitle: true,
         actions: [
+          // LOGIN / LOGOUT
           IconButton(
             icon: Icon(user != null ? Icons.logout : Icons.login),
             color: Colors.black,
@@ -123,6 +121,7 @@ class _LandingPageState extends State<LandingPage>
         elevation: 0,
       ),
       body: Center(
+        // SAVED MOVIES LIST VIEW
         child: FutureBuilder(
           future: Hive.openBox('user_movies'),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -140,9 +139,9 @@ class _LandingPageState extends State<LandingPage>
               return Text('');
           },
         ),
-        // child: MoviesListView(),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // SEARCH MOVIES LIST VIEW
       floatingActionButton: Container(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton.extended(
@@ -154,7 +153,6 @@ class _LandingPageState extends State<LandingPage>
                 transitionAnimationController: controller,
                 isScrollControlled: true,
                 context: context,
-                // backgroundColor: Colors.transparent,
                 builder: bottomSheetView,
               ).whenComplete(() {
                 controller = BottomSheet.createAnimationController(this);

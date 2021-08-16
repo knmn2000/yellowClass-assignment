@@ -20,6 +20,7 @@ class Movie extends HiveObject {
     return Movie(
       id: json['id'],
       title: json['title'],
+      // THE API DOES NOT RETURN DIRECTOR's NAME
       director: 'director',
       poster: json['poster_path'],
     );
