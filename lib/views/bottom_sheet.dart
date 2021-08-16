@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:yellowclass/views/movies_list_view.dart';
 import 'package:yellowclass/views/search_list_view.dart';
 
 final _searchQueryController = TextEditingController();
@@ -8,7 +7,7 @@ Widget bottomSheetView(BuildContext context) {
   return StatefulBuilder(
     builder: (BuildContext context, setState) {
       return Container(
-        padding: MediaQuery.of(context).viewInsets,
+        // padding: MediaQuery.of(context).viewInsets,
         //TODO: ADD BORDER RADIUS
         decoration: BoxDecoration(
             borderRadius: new BorderRadius.only(

@@ -22,9 +22,12 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  firebase_auth: ^3.0.1
+  firebase_dynamic_links: ^2.0.7
   flutter:
     sdk: flutter
   flutter_slidable: ^0.6.0
+  google_sign_in: ^5.0.7
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   http: ^0.13.3

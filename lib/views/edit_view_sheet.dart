@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:yellowclass/modals/movie.dart';
 
 Widget editViewSheet(BuildContext context, int key) {
-  Box<dynamic> movieBox = Hive.box('saved_movies');
+  Box<dynamic> movieBox = Hive.box('user_movies');
   Movie _movie = movieBox.get(key);
   final _titleController = new TextEditingController(text: _movie.title);
   final _posterController = TextEditingController(text: _movie.poster);
@@ -22,15 +22,17 @@ Widget editViewSheet(BuildContext context, int key) {
   return StatefulBuilder(
     builder: (BuildContext context, setState) {
       return Container(
-        padding: MediaQuery.of(context).viewInsets,
+        // padding: MediaQuery.of(context).viewInsets,
         //TODO: ADD BORDER RADIUS
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-        height: MediaQuery.of(context).size.height * 0.7,
         width: double.infinity,
+        // height: MediaQuery.of(context).size.height * 0.4,
+        // height: 500,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            // child: ListView(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.all(8.0),

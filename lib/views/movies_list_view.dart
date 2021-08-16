@@ -3,8 +3,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive/hive.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:yellowclass/modals/movie.dart';
-import 'package:octo_image/octo_image.dart';
-import 'package:yellowclass/views/heroDialog.dart';
 import 'package:yellowclass/views/widgets/movie_tile.dart';
 
 import 'edit_view_sheet.dart';
@@ -17,7 +15,7 @@ class MoviesListView extends StatefulWidget {
 class _MoviesListViewState extends State<MoviesListView> {
   Box<dynamic> movieBox;
   void getDataFromHive() {
-    movieBox = Hive.box('saved_movies');
+    movieBox = Hive.box('user_movies');
   }
 
   @override
@@ -25,7 +23,7 @@ class _MoviesListViewState extends State<MoviesListView> {
     super.initState();
     getDataFromHive();
     setState(() {
-      movieBox = Hive.box('saved_movies');
+      movieBox = Hive.box('user_movies');
     });
   }
 
@@ -33,7 +31,7 @@ class _MoviesListViewState extends State<MoviesListView> {
   void deleteMovie(key) async {
     await movieBox.delete(key);
     setState(() {
-      movieBox = Hive.box('saved_movies');
+      movieBox = Hive.box('user_movies');
     });
   }
 
