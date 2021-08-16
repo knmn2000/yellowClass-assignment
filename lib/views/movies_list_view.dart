@@ -1,10 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive/hive.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 import 'package:yellowclass/modals/movie.dart';
-import 'package:http/http.dart' as http;
+import 'package:octo_image/octo_image.dart';
+import 'package:yellowclass/views/heroDialog.dart';
+import 'package:yellowclass/views/widgets/movie_tile.dart';
+
+import 'edit_view_sheet.dart';
 
 class MoviesListView extends StatefulWidget {
   @override
@@ -12,93 +15,54 @@ class MoviesListView extends StatefulWidget {
 }
 
 class _MoviesListViewState extends State<MoviesListView> {
+  Box<dynamic> movieBox;
+  void getDataFromHive() {
+    movieBox = Hive.box('saved_movies');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDataFromHive();
+    setState(() {
+      movieBox = Hive.box('saved_movies');
+    });
+  }
+
   SlidableController slidableController;
+  void deleteMovie(key) async {
+    await movieBox.delete(key);
+    setState(() {
+      movieBox = Hive.box('saved_movies');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // return FutureBuilder<Map<String, dynamic>>(
-    return Container(
-      child: FutureBuilder<List<Movie>>(
-        future: _fetchMovies(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            // Map<String, dynamic> data = snapshot.data;
-            List<Movie> data = snapshot.data;
-            return _moviesListView(data);
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          } else {
-            return Text("no movies selected");
-          }
-          // return CircularProgressIndicator();
+    if (movieBox.length > 0) {
+      // TODO: make pretty
+      return InfiniteListView.separated(
+        itemBuilder: (BuildContext context, int index) {
+          final movie = movieBox.getAt(index % movieBox.length) as Movie;
+          return movieTile(
+            context,
+            movie.key,
+            movie.title,
+            movie.director,
+            movie.poster,
+            index,
+            deleteMovie,
+            editViewSheet,
+          );
         },
-      ),
-    );
-  }
-
-  Future<List<Movie>> _fetchMovies() async {
-    // Future<Map<String, dynamic>> _fetchMovies() async {
-    final moviesListAPIUrl =
-        'https://api.themoviedb.org/3/discover/movie?api_key=bb058074a670ad43d29e1d396c92ef1f&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate';
-    // 'https://192.168.29.202:3001/movies';
-    final response = await http.get(Uri.parse(moviesListAPIUrl));
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> jsonResponse = json.decode(response.body);
-      List data = jsonResponse['results'];
-      // return listView;
-      return data.map((movie) => new Movie.fromJson(movie)).toList();
-    } else {
-      throw Exception('Error');
-    }
-  }
-
-  Slidable _tile(String title, String subtitle, String poster) => Slidable(
-        child: ListTile(
-          title: Text(title,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 20,
-              )),
-          subtitle: Text(subtitle),
-          // leading: Icon(icon, color: Colors.blue[500]),
+        separatorBuilder: (BuildContext context, int index) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: const Divider(height: 2.0),
         ),
-        actionPane: SlidableDrawerActionPane(),
-        actionExtentRatio: 0.25,
-        secondaryActions: <Widget>[
-          IconSlideAction(
-            caption: 'Archive',
-            color: Colors.blue,
-            icon: Icons.archive,
-            onTap: () => print('Archive'),
-          ),
-          IconSlideAction(
-            caption: 'Share',
-            color: Colors.indigo,
-            icon: Icons.share,
-            onTap: () => print('Share'),
-          ),
-        ],
+        anchor: 0.5,
       );
-
-  InfiniteListView _moviesListView(data) {
-    return InfiniteListView.separated(
-      itemBuilder: (BuildContext context, int index) {
-        return _tile(
-            data[index % data.length].title,
-            data[index % data.length].director,
-            data[index % data.length].poster);
-      },
-      separatorBuilder: (BuildContext context, int index) =>
-          const Divider(height: 2.0),
-      anchor: 0.5,
-      // return ListView.builder(
-      //   scrollDirection: Axis.vertical,
-      //   itemCount: data.length,
-      //   itemBuilder: (context, index) {
-      //     return _tile(
-      //         data[index].title, data[index].director, data[index].poster);
-      //   },
-      // );
-    );
+    } else {
+      return Text("No movies");
+    }
   }
 }

@@ -10,13 +10,18 @@ Widget bottomSheetView(BuildContext context) {
       return Container(
         padding: MediaQuery.of(context).viewInsets,
         //TODO: ADD BORDER RADIUS
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-        height: MediaQuery.of(context).size.height * 0.7,
+        decoration: BoxDecoration(
+            borderRadius: new BorderRadius.only(
+          topLeft: const Radius.circular(25.0),
+          topRight: const Radius.circular(25.0),
+        )),
+        // height: MediaQuery.of(context).size.height * 0.7,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Row(
                 children: [
@@ -28,7 +33,7 @@ Widget bottomSheetView(BuildContext context) {
                         width: MediaQuery.of(context).size.width * 0.85,
                         child: TextField(
                           textInputAction: TextInputAction.search,
-                          onSubmitted: (_) {
+                          onEditingComplete: () {
                             setState(() {
                               isSearching = true;
                             });
@@ -71,7 +76,7 @@ Widget bottomSheetView(BuildContext context) {
                       child: SearchListView(
                         searchQuery: _searchQueryController.text,
                       ))
-                  : Container(child: Text("works")),
+                  : Container(child: Text("- - - ")),
             ],
           ),
         ),

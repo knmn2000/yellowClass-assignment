@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 part 'movie.g.dart';
 
 @HiveType(typeId: 0)
-class Movie {
+class Movie extends HiveObject {
   @HiveField(0)
   final int id;
   @HiveField(1)

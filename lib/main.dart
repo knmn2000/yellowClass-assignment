@@ -4,12 +4,15 @@ import 'package:yellowclass/views/bottom_sheet.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 import 'views/movies_list_view.dart';
+import 'modals/movie.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDirectory =
       await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<Movie>(MovieAdapter());
+  await Hive.openBox('saved_movies');
   runApp(MyApp());
 }
 
@@ -53,9 +56,12 @@ class _LandingPageState extends State<LandingPage>
     super.dispose();
   }
 
+  final movieBox = Hive.box('saved_movies');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(offwhite),
       appBar: AppBar(
         centerTitle: true,
@@ -73,8 +79,13 @@ class _LandingPageState extends State<LandingPage>
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError)
                 return Text(snapshot.error.toString());
-              else
-                return MoviesListView();
+              else {
+                if (movieBox.length > 0) {
+                  return MoviesListView();
+                } else {
+                  return Text('no movies');
+                }
+              }
             } else
               return Scaffold();
           },
@@ -88,13 +99,16 @@ class _LandingPageState extends State<LandingPage>
           label: Text("Add movie"),
           icon: Icon(Icons.add),
           onPressed: () {
-            showModalBottomSheet(
+            showModalBottomSheet<dynamic>(
               transitionAnimationController: controller,
               isScrollControlled: true,
               context: context,
+              // backgroundColor: Colors.transparent,
               builder: bottomSheetView,
-            ).whenComplete(
-                () => controller = BottomSheet.createAnimationController(this));
+            ).whenComplete(() {
+              controller = BottomSheet.createAnimationController(this);
+              setState(() {});
+            });
           },
         ),
       ),
